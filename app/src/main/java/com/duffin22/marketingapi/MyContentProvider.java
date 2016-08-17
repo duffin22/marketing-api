@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
+import android.support.annotation.Nullable;
 
 /**
  * Created by matthewtduffin on 17/08/16.

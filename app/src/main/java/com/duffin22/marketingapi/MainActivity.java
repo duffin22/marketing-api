@@ -54,14 +54,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    String run(String url) throws IOException {
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-
-        Response response = client.newCall(request).execute();
-        return response.body().string();
-    }
     private class OkHTTPTask extends AsyncTask<String, Void, String> {
 
 
@@ -86,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String i) {
             Log.i(TAG,"OkHTTP onPostExecute");
 
+            //TODO: Update adapter
 
         }
 
