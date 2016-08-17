@@ -4,10 +4,10 @@ package com.duffin22.marketingapi;
  * Created by mgkan on 2016-08-17.
  */
 public class Stock {
-  public String symbol="";
-  public String name="";
-  public String exchange="";
-  public int quantity=0;
+  public String symbol;
+  public String name;
+  public String exchange;
+  public int quantity;
 
   public Stock(String symbol,String name, String exchange, int quantity){
     this.symbol=symbol;
