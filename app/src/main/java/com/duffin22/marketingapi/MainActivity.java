@@ -5,6 +5,8 @@ import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,12 +18,15 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     OkHttpClient client = new OkHttpClient();
     public final String TAG = getClass().getCanonicalName();
     FloatingActionButton mFab;
+    RecyclerView recyclerView;
+    List<Stock> stockList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,12 @@ public class MainActivity extends AppCompatActivity {
         new OkHTTPTask().execute(url);
 
         Log.i(TAG,response);
+
+        recyclerView = (RecyclerView) findViewById(R.id.rvStocks_activityMain);
+        stockList = new ArrayList<>();  // TODO: actually create this list
+        StockAdapter adapter = new StockAdapter(this, stockList);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
     }
 
