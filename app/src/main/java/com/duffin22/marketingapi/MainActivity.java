@@ -3,6 +3,7 @@ package com.duffin22.marketingapi;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,7 +22,7 @@ import okhttp3.Response;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AddStockFragment.OnFragmentInteractionListener {
     OkHttpClient client = new OkHttpClient();
     public final String TAG = getClass().getCanonicalName();
     FloatingActionButton mFab;
@@ -36,7 +37,9 @@ public class MainActivity extends AppCompatActivity {
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: Pop up dialog fragment that will take in input name and quantity
+                FragmentManager fraggyMan = getSupportFragmentManager();
+                AddStockFragment fraggy = AddStockFragment.newInstance();
+                fraggy.show(fraggyMan,TAG);
             }
         });
 
@@ -84,4 +87,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onFragmentInteraction(Stock stock) {
+        stockList.add(stock);
+    }
 }
