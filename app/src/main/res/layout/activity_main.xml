@@ -10,7 +10,7 @@
     tools:context="com.duffin22.marketingapi.MainActivity">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvContacts"
+        android:id="@+id/rvStocks_activityMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

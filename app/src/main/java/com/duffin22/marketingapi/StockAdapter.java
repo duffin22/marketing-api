@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.List;
+
 /**
  * Created by erikrudie on 8/17/16.
  */
@@ -53,9 +55,9 @@ public class StockAdapter extends
         Stock model = mModel.get(position);
 
         TextView tvStockName = viewHolder.tvStockName;
-//  TODO:      tvStockName.setText(model.getName());
+        tvStockName.setText(model.getName());
         TextView tvStockQuantity = viewHolder.tvStockQuantity;
-//  TODO:      tvStockQuantity.setText(model.getQuantity());
+        tvStockQuantity.setText(model.getQuantity());
 
 
     }
