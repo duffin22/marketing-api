@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements AddStockFragment.OnFragmentInteractionListener {
-    OkHttpClient client = new OkHttpClient();
+    public static OkHttpClient client = new OkHttpClient();
     public final String TAG = getClass().getCanonicalName();
     FloatingActionButton mFab;
     RecyclerView recyclerView;
@@ -49,12 +49,6 @@ public class MainActivity extends AppCompatActivity implements AddStockFragment.
             }
         });
 
-        String url = "http://dev.markitondemand.com/MODApis/Api/v2/Lookup/json?input=";
-        String response = "";
-        new OkHTTPTask().execute(url+"stringy");
-
-        Log.i(TAG, response);
-
         recyclerView = (RecyclerView) findViewById(R.id.rvStocks_activityMain);
         stockList = new ArrayList<>();  // TODO: actually create this list
         adapter = new StockAdapter(this, stockList);
@@ -63,9 +57,6 @@ public class MainActivity extends AppCompatActivity implements AddStockFragment.
 
 
         System.out.println();
-
-        MyDBHandler handler = new MyDBHandler(this, null, null, 1);
-//        addProduct();
 
     }
 
@@ -87,35 +78,6 @@ public class MainActivity extends AppCompatActivity implements AddStockFragment.
     public void onFragmentInteraction(Stock stock) {
         stockList.add(stock);
         adapter.notifyDataSetChanged();
-    }
-
-    private class OkHTTPTask extends AsyncTask<String, Void, String> {
-
-        protected String doInBackground(String... values) {
-            Log.i(TAG, "OkHTTP doInBackground");
-            Request request = new Request.Builder()
-                    .url(values[0])
-                    .build();
-            String s = "";
-
-            try {
-                Response response = client.newCall(request).execute();
-                s = response.body().string();
-                Log.i(TAG, "Response as string: " + s);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return s;
-        }
-
-        protected void onPostExecute(String i) {
-            Log.i(TAG, "OkHTTP onPostExecute");
-
-            //TODO: Update adapter
-
-        }
-
     }
 }
 

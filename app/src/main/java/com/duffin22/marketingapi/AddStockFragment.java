@@ -2,14 +2,22 @@ package com.duffin22.marketingapi;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+
+import java.io.IOException;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 
 /**
@@ -24,6 +32,9 @@ public class AddStockFragment extends DialogFragment {
     Context mContext;
     Button mButton;
     EditText mQuantityEdit, mNameEdit;
+    public final String TAG = getClass().getCanonicalName();
+    String mName;
+    int mQuantity;
 
     private OnFragmentInteractionListener mListener;
 
@@ -31,11 +42,8 @@ public class AddStockFragment extends DialogFragment {
         //required empty constructor
     }
 
-    // TODO: Rename and change types and number of parameters
     public static AddStockFragment newInstance() {
         AddStockFragment fragment = new AddStockFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -54,21 +62,54 @@ public class AddStockFragment extends DialogFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_stock, container, false);
         Button mButton = (Button) view.findViewById(R.id.stock_button);
-        EditText mQuantityEdit = (EditText) view.findViewById(R.id.stock_quantity);
-        EditText mNameEdit = (EditText) view.findViewById(R.id.stock_name);
+        final EditText mQuantityEdit = (EditText) view.findViewById(R.id.stock_quantity);
+        final EditText mNameEdit = (EditText) view.findViewById(R.id.stock_name);
 
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                OnFragmentInteractionListener listener = (OnFragmentInteractionListener) mContext;
-                listener.onFragmentInteraction(new Stock("NSDF","Nassydaffyduck","FTSE",19));
-                dismiss();
+                String url = "http://dev.markitondemand.com/MODApis/Api/v2/Lookup/json?input=";
+                mName = mNameEdit.getText().toString();
+                mQuantity = Integer.parseInt(mQuantityEdit.getText().toString());
+                new OkHTTPTask().execute(url+mName);
 
             }
         });
 
 
         return view;
+    }
+
+    private class OkHTTPTask extends AsyncTask<String, Void, String> {
+
+        protected String doInBackground(String... values) {
+            Log.i(TAG, "OkHTTP doInBackground");
+            OkHttpClient client = MainActivity.client;
+            Request request = new Request.Builder()
+                    .url(values[0])
+                    .build();
+            String s = "";
+
+            try {
+                Response response = client.newCall(request).execute();
+                s = response.body().string();
+                Log.i(TAG, "Response as string: " + s);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return s;
+        }
+
+        protected void onPostExecute(String i) {
+            Log.i(TAG, "OkHTTP onPostExecute");
+
+            OnFragmentInteractionListener listener = (OnFragmentInteractionListener) mContext;
+            listener.onFragmentInteraction(new Stock("NSDF",i,"FTSE",mQuantity));
+            dismiss();
+
+        }
+
     }
 
     @Override
