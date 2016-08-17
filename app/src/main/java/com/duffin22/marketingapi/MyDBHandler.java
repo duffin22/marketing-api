@@ -69,7 +69,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
     int updatedRows = 0;
 
-      updatedRows = db.update(TABLE_SUPERSICKS,values,selection);
+      updatedRows = db.update(TABLE_SUPERSICKS,values,selection, null);
 
     db.close();
     return updatedRows;

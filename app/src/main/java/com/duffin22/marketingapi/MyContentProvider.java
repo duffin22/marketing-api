@@ -12,8 +12,8 @@ import android.support.annotation.Nullable;
  */
 public class MyContentProvider extends ContentProvider {
 
-    private static final String AUTHORITY = "generalassembly.yuliyakaleda.contentprovider.MyContentProvider";
-    private static final String PRODUCTS_TABLE = "products";
+    private static final String AUTHORITY = "com.duffin22.marketingapi.MyContentProvider";
+    private static final String PRODUCTS_TABLE = "supersicks";
     public static final Uri CONTENT_URI = Uri.parse("content://"
             + AUTHORITY + "/" + PRODUCTS_TABLE);
 
@@ -48,11 +48,7 @@ public class MyContentProvider extends ContentProvider {
 
         switch (uriType) {
             case PRODUCTS:
-                rowsUpdated = myDB.updateProduct(values,selection,null);
-                break;
-            case PRODUCTS_ID:
-                String id = uri.getLastPathSegment();
-                rowsUpdated = myDB.updateProduct(values,null,id);
+                rowsUpdated = myDB.updateProduct(values,selection);
                 break;
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri);
@@ -87,11 +83,6 @@ public class MyContentProvider extends ContentProvider {
             case PRODUCTS:
                 rowsDeleted = myDB.deleteProductByName(selection);
                 break;
-
-            case PRODUCTS_ID:
-                String id = uri.getLastPathSegment();
-                rowsDeleted = myDB.deleteProductById(id);
-                break;
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri);
         }
@@ -106,9 +97,6 @@ public class MyContentProvider extends ContentProvider {
         Cursor cursor = null;
 
         switch (uriType) {
-            case PRODUCTS_ID:
-                cursor = myDB.findProductById(uri.getLastPathSegment());
-                break;
             case PRODUCTS:
                 cursor = myDB.findProductByName(selection);
                 break;
