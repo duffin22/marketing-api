@@ -1,6 +1,9 @@
 package com.duffin22.marketingapi;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
@@ -29,6 +32,8 @@ public class MainActivity extends AppCompatActivity implements AddStockFragment.
     RecyclerView recyclerView;
     List<Stock> stockList;
 
+    public static final Uri CONTENT_URI = Uri.parse("content://com.duffin22.marketingapi.MyContentProvider/supersicks");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,15 +44,15 @@ public class MainActivity extends AppCompatActivity implements AddStockFragment.
             public void onClick(View view) {
                 FragmentManager fraggyMan = getSupportFragmentManager();
                 AddStockFragment fraggy = AddStockFragment.newInstance();
-                fraggy.show(fraggyMan,TAG);
+                fraggy.show(fraggyMan, TAG);
             }
         });
 
         String url = "http://dev.markitondemand.com/MODApis/Api/v2/Lookup/json?input=%22microsoft%22&name=%22microsoft%22";
         String response = "";
-        new OkHTTPTask().execute(url);
+//        new OkHTTPTask().execute(url);
 
-        Log.i(TAG,response);
+        Log.i(TAG, response);
 
         recyclerView = (RecyclerView) findViewById(R.id.rvStocks_activityMain);
         stockList = new ArrayList<>();  // TODO: actually create this list
@@ -55,13 +60,37 @@ public class MainActivity extends AppCompatActivity implements AddStockFragment.
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+
+        System.out.println();
+
+        MyDBHandler handler = new MyDBHandler(this, null, null, 1);
+        addProduct();
+
+    }
+
+
+    public void addProduct() {
+        ContentResolver cr = getContentResolver();
+        ContentValues values = new ContentValues();
+        values.put(MyDBHandler.COLUMN_EXCHANGE, "NASDAQ");
+        values.put(MyDBHandler.COLUMN_NAME, "North Dakota Detroits");
+        values.put(MyDBHandler.COLUMN_QUANTITY, 1);
+        values.put(MyDBHandler.COLUMN_SYMBOL, "NDD");
+        Uri uri = cr.insert(CONTENT_URI, values);
+        Log.d(MainActivity.class.getName(), uri.toString());
+//             mResultTextView.setText(mInputName.getText().toString()+ " has been added!");
+    }
+
+
+    @Override
+    public void onFragmentInteraction(Stock stock) {
+        stockList.add(stock);
     }
 
     private class OkHTTPTask extends AsyncTask<String, Void, String> {
 
-
         protected String doInBackground(String... values) {
-            Log.i(TAG,"OkHTTP doInBackground");
+            Log.i(TAG, "OkHTTP doInBackground");
             Request request = new Request.Builder()
                     .url(values[0])
                     .build();
@@ -70,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements AddStockFragment.
             try {
                 Response response = client.newCall(request).execute();
                 s = response.body().string();
-                Log.i(TAG,"Response as string: "+s);
+                Log.i(TAG, "Response as string: " + s);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -79,16 +108,12 @@ public class MainActivity extends AppCompatActivity implements AddStockFragment.
         }
 
         protected void onPostExecute(String i) {
-            Log.i(TAG,"OkHTTP onPostExecute");
+            Log.i(TAG, "OkHTTP onPostExecute");
 
             //TODO: Update adapter
 
         }
 
     }
-
-    @Override
-    public void onFragmentInteraction(Stock stock) {
-        stockList.add(stock);
-    }
 }
+
