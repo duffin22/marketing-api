@@ -17,13 +17,15 @@ public class StockAdapter extends
         RecyclerView.Adapter<StockAdapter.ViewHolder> {
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView tvStockName, tvStockQuantity;
+        public TextView tvStockName, tvStockQuantity, tvExchange, tvStockSymbol;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             tvStockName = (TextView) itemView.findViewById(R.id.textView_stockName_recyclerItem);
             tvStockQuantity = (TextView) itemView.findViewById(R.id.textView_stockQuantity_recyclerItem);
+            tvStockSymbol = (TextView) itemView.findViewById(R.id.textView_stockSymbol_recyclerItem);
+            tvExchange = (TextView) itemView.findViewById(R.id.textView_exchange_recyclerItem);
         }
     }
 
@@ -56,9 +58,15 @@ public class StockAdapter extends
 
         TextView tvStockName = viewHolder.tvStockName;
         tvStockName.setText(model.getName());
+
         TextView tvStockQuantity = viewHolder.tvStockQuantity;
         tvStockQuantity.setText(model.getQuantity());
 
+        TextView tvStockSymbol = viewHolder.tvStockSymbol;
+        tvStockSymbol.setText(model.getSymbol());
+
+        TextView tvExchange = viewHolder.tvExchange;
+        tvExchange.setText(model.getExchange());
 
     }
 
