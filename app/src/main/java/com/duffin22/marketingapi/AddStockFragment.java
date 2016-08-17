@@ -21,7 +21,7 @@ import android.widget.EditText;
  * create an instance of this fragment.
  */
 public class AddStockFragment extends DialogFragment {
-    Context context;
+    Context mContext;
     Button mButton;
     EditText mQuantityEdit, mNameEdit;
 
@@ -53,25 +53,28 @@ public class AddStockFragment extends DialogFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_stock, container, false);
+        Button mButton = (Button) view.findViewById(R.id.stock_button);
+        EditText mQuantityEdit = (EditText) view.findViewById(R.id.stock_quantity);
+        EditText mNameEdit = (EditText) view.findViewById(R.id.stock_name);
 
+        mButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                OnFragmentInteractionListener listener = (OnFragmentInteractionListener) mContext;
+                listener.onFragmentInteraction(new Stock("NSDF","Nassydaffyduck","FTSE",19));
+                dismiss();
 
-
-
+            }
+        });
 
 
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        mContext = context;
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {

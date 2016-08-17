@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements AddStockFragment.
     FloatingActionButton mFab;
     RecyclerView recyclerView;
     List<Stock> stockList;
+    StockAdapter adapter;
 
     public static final Uri CONTENT_URI = Uri.parse("content://com.duffin22.marketingapi.MyContentProvider/supersicks");
 
@@ -48,15 +49,15 @@ public class MainActivity extends AppCompatActivity implements AddStockFragment.
             }
         });
 
-        String url = "http://dev.markitondemand.com/MODApis/Api/v2/Lookup/json?input=%22microsoft%22&name=%22microsoft%22";
+        String url = "http://dev.markitondemand.com/MODApis/Api/v2/Lookup/json?input=";
         String response = "";
-//        new OkHTTPTask().execute(url);
+        new OkHTTPTask().execute(url+"stringy");
 
         Log.i(TAG, response);
 
         recyclerView = (RecyclerView) findViewById(R.id.rvStocks_activityMain);
         stockList = new ArrayList<>();  // TODO: actually create this list
-        StockAdapter adapter = new StockAdapter(this, stockList);
+        adapter = new StockAdapter(this, stockList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements AddStockFragment.
         System.out.println();
 
         MyDBHandler handler = new MyDBHandler(this, null, null, 1);
-        addProduct();
+//        addProduct();
 
     }
 
@@ -85,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements AddStockFragment.
     @Override
     public void onFragmentInteraction(Stock stock) {
         stockList.add(stock);
+        adapter.notifyDataSetChanged();
     }
 
     private class OkHTTPTask extends AsyncTask<String, Void, String> {

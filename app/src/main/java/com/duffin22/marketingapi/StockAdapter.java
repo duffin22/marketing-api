@@ -60,7 +60,7 @@ public class StockAdapter extends
         tvStockName.setText(model.getName());
 
         TextView tvStockQuantity = viewHolder.tvStockQuantity;
-        tvStockQuantity.setText(model.getQuantity());
+        tvStockQuantity.setText("" + model.getQuantity());
 
         TextView tvStockSymbol = viewHolder.tvStockSymbol;
         tvStockSymbol.setText(model.getSymbol());
