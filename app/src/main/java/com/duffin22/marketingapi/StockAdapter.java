@@ -11,18 +11,17 @@ import android.widget.TextView;
  * Created by erikrudie on 8/17/16.
  */
 
-
-
 public class StockAdapter extends
         RecyclerView.Adapter<StockAdapter.ViewHolder> {
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView VIEW;
+        public TextView tvStockName, tvStockQuantity;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-//            VIEW = (TextView) itemView.findViewById(R.id.contact_name);
+            tvStockName = (TextView) itemView.findViewById(R.id.textView_stockName_recyclerItem);
+            tvStockQuantity = (TextView) itemView.findViewById(R.id.textView_stockQuantity_recyclerItem);
         }
     }
 
@@ -53,8 +52,12 @@ public class StockAdapter extends
     public void onBindViewHolder(StockAdapter.ViewHolder viewHolder, int position) {
         Stock model = mModel.get(position);
 
-        TextView textView = viewHolder.nameTextView;
-        textView.setText(model.getName());
+        TextView tvStockName = viewHolder.tvStockName;
+//  TODO:      tvStockName.setText(model.getName());
+        TextView tvStockQuantity = viewHolder.tvStockQuantity;
+//  TODO:      tvStockQuantity.setText(model.getQuantity());
+
+
     }
 
     // Returns the total count of items in the list
